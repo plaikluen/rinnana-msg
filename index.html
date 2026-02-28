@@ -86,13 +86,14 @@
         .char-title { color: var(--pink-light); font-size: 32px; font-weight: 700; margin: 0; }
         .char-sub { font-size: 22px; color: #555; margin: 5px 0 30px 0; }
 
-        /* --- 3D CARD FLIP (ID Card) --- */
+        /* --- ✨ 3D CARD FLIP (ID Card) - แก้ไขรองรับ Mobile ✨ --- */
         .idcard-wrapper { 
             width: 100%;
             max-width: 550px;
-            height: 350px; 
+            aspect-ratio: 550 / 350; /* รักษาสัดส่วนบัตรแทนการใช้ Height ตายตัว */
             perspective: 1000px;
             cursor: pointer;
+            margin: 0 auto;
         }
         .idcard-inner {
             position: relative;
@@ -158,9 +159,8 @@
             transition: transform 0.3s ease;
         }
         
-        /* สั่งหมุนตลอดเวลา */
-        .rotate-right { animation: spin-right 8s linear infinite; } /* หมุนตามเข็ม */
-        .rotate-left { animation: spin-left 8s linear infinite; }   /* หมุนทวนเข็ม */
+        .rotate-right { animation: spin-right 8s linear infinite; }
+        .rotate-left { animation: spin-left 8s linear infinite; }
 
         @keyframes spin-right {
             from { transform: rotate(0deg); }
@@ -171,7 +171,6 @@
             to { transform: rotate(0deg); }
         }
 
-        /* หยุดหมุนเมื่อเอาเมาส์ชี้ */
         .icon-divider img:hover {
             animation-play-state: paused;
             transform: scale(1.2) !important;
@@ -211,7 +210,7 @@
         @media (max-width: 1024px) {
             .profile-grid { grid-template-columns: 1fr; }
             .hero-img { width: 150%; left: -25%; } 
-            .idcard-wrapper { height: 300px; }
+            /* ลบ Height ตายตัวใน Media Query ออกเพื่อให้ใช้ aspect-ratio แทน */
         }
     </style>
 </head>
