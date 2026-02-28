@@ -86,13 +86,100 @@
         .char-title { color: var(--pink-light); font-size: 32px; font-weight: 700; margin: 0; }
         .char-sub { font-size: 22px; color: #555; margin: 5px 0 30px 0; }
 
-        .idcard-wrapper { display: flex; justify-content: center; }
-        .idcard { width: 100%; max-width: 550px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        /* --- 3D CARD FLIP (ID Card) --- */
+        .idcard-wrapper { 
+            width: 100%;
+            max-width: 550px;
+            height: 350px; 
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .idcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+        .idcard-wrapper:hover .idcard-inner { transform: rotateY(180deg); }
+        .idcard-front, .idcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        .idcard-back { transform: rotateY(180deg); }
+
+        /* --- ✨ SCALE & LIFT ANIMATION ✨ (Sheet & Wand) --- */
+        .hover-lift-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-lift-container:hover {
+            transform: scale(1.03) translateY(-10px); 
+        }
+        .img-base, .img-hover {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: opacity 0.4s ease;
+        }
+        .img-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0; 
+        }
+        .hover-lift-container:hover .img-base { opacity: 0; }
+        .hover-lift-container:hover .img-hover { 
+            opacity: 1; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+        }
+
+        /* --- ✨ ICON ROTATING DIVIDER ✨ --- */
+        .icon-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 60px 0;
+        }
+        .icon-divider img {
+            width: 80px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        /* สั่งหมุนตลอดเวลา */
+        .rotate-right { animation: spin-right 8s linear infinite; } /* หมุนตามเข็ม */
+        .rotate-left { animation: spin-left 8s linear infinite; }   /* หมุนทวนเข็ม */
+
+        @keyframes spin-right {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spin-left {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        /* หยุดหมุนเมื่อเอาเมาส์ชี้ */
+        .icon-divider img:hover {
+            animation-play-state: paused;
+            transform: scale(1.2) !important;
+        }
+
+        /* --------------------------- */
 
         .sheet-wrapper { display: flex; flex-direction: column; gap: 20px; }
-        .sheet { width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-
-        /* --- ส่วน WAND ที่ย้ายมาอยู่ตรงกลางหน้าจอ --- */
         .wand-full-width {
             margin-top: 60px;
             display: flex;
@@ -101,21 +188,15 @@
             text-align: center;
             width: 100%;
         }
-        .wand { 
-            width: 100%; 
-            max-width: 800px; /* ขยายขนาดไม้ให้ใหญ่สะใจตรงกลางหน้าจอ */
-            border-radius: 15px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
-            margin-top: 15px;
-        }
-        
-        .section-label { font-weight: 700; font-size: 20px; margin-bottom: 5px; }
+        .section-label { font-weight: 700; font-size: 20px; margin-bottom: 10px; }
+        .credit-text { font-weight: 400; font-size: 16px; margin-top: 15px; }
+
         .pink-text { color: var(--pink-light); }
         .blue-text { color: var(--blue-theme); }
 
         /* Chat Section */
         .chat-section {
-            max-width: 1000px; margin: 100px auto; padding: 40px;
+            max-width: 1000px; margin: 40px auto 100px auto; padding: 40px;
             background: #fdfdfd; border-radius: 30px;
         }
         .chat-bubbles { display: flex; flex-direction: column; gap: 40px; }
@@ -124,12 +205,13 @@
         .bubble-blue { flex-direction: row-reverse; }
         .bubble-content { padding: 25px 35px; font-size: 18px; border-radius: 25px; }
         .bg-pink { background: #f9b6d2; color: #e94e8a; border-radius: 25px 25px 25px 0; }
-        .bg-blue { background: #b6e9f9; color: #1eb6c1; border-radius: 25px 25px 0 25px; }
+        .bg-blue { background: #b6e9f9; color: #00768E; border-radius: 25px 25px 0 25px; }
         .bubble-avatar { width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; }
 
         @media (max-width: 1024px) {
             .profile-grid { grid-template-columns: 1fr; }
             .hero-img { width: 150%; left: -25%; } 
+            .idcard-wrapper { height: 300px; }
         }
     </style>
 </head>
@@ -156,21 +238,31 @@
     <main>
         <section class="character-container">
             <div class="char-title pink-text">Character</div>
-            <div class="char-sub">東雲凛 - Shinonome Rin (ชิโนโนเมะ ริน)</div>
+            <div class="char-sub">東雲 凛 - Shinonome Rin (ชิโนโนเมะ ริน)</div>
 
             <div class="profile-grid">
                 <div class="idcard-wrapper">
-                    <img src="images/idcard1.jpg" alt="ID Card Rin" class="idcard">
+                    <div class="idcard-inner">
+                        <img src="images/idcard1.jpg" alt="ID Card Rin Front" class="idcard-front">
+                        <img src="images/idcard1_back.jpg" alt="ID Card Rin Back" class="idcard-back">
+                    </div>
                 </div>
                 <div class="sheet-wrapper">
                     <div class="section-label pink-text">Character Sheet</div>
-                    <img src="images/sheet1.jpg" class="sheet">
+                    <div class="hover-lift-container">
+                        <img src="images/sheet1.jpg" class="img-base">
+                        <img src="images/sheet1_back.jpg" class="img-hover">
+                    </div>
                 </div>
             </div>
 
             <div class="wand-full-width">
-                <div class="section-label pink-text">WAND ออกแบบโดย Reverie Silver</div>
-                <img src="images/wand1.jpg" alt="Wand Rin" class="wand">
+                <div class="section-label pink-text">WAND</div>
+                <div class="hover-lift-container" style="max-width: 800px;">
+                    <img src="images/wand1.jpg" class="img-base">
+                    <img src="images/wand1_back.png" class="img-hover">
+                </div>
+                <div class="credit-text pink-text" style="font-weight: 400;">ออกแบบโดย Reverie Silver</div>
             </div>
         </section>
 
@@ -178,23 +270,38 @@
 
         <section class="character-container" style="padding-top: 80px;">
             <div class="char-title blue-text">Character</div>
-            <div class="char-sub">姓名 - Hirabayashi Naoe (ฮิราบายาชิ นาโอเอะ)</div>
+            <div class="char-sub">姓 名 - Hirabayashi Naoe (ฮิราบายาชิ นาโอเอะ)</div>
 
             <div class="profile-grid">
                 <div class="idcard-wrapper">
-                    <img src="images/idcard2.jpg" alt="ID Card 2" class="idcard">
+                    <div class="idcard-inner">
+                        <img src="images/idcard2.jpg" alt="ID Card 2 Front" class="idcard-front">
+                        <img src="images/idcard1_back.jpg" alt="ID Card 2 Back" class="idcard-back">
+                    </div>
                 </div>
                 <div class="sheet-wrapper">
                     <div class="section-label blue-text">Character Sheet</div>
-                    <img src="images/sheet2.jpg" class="sheet">
+                    <div class="hover-lift-container">
+                        <img src="images/sheet2.jpg" class="img-base">
+                        <img src="images/sheet2_back.jpg" class="img-hover"> 
+                    </div>
                 </div>
             </div>
 
             <div class="wand-full-width">
-                <div class="section-label blue-text">CANE ออกแบบโดย Reverie Silver</div>
-                <img src="images/wand2.jpg" alt="Cane 2" class="wand">
+                <div class="section-label blue-text">CANE</div>
+                <div class="hover-lift-container" style="max-width: 800px;">
+                    <img src="images/wand2.jpg" class="img-base">
+                    <img src="images/wand2_back.jpg" class="img-hover">
+                </div>
+                <div class="credit-text blue-text" style="font-weight: 400;">ออกแบบโดย Reverie Silver</div>
             </div>
         </section>
+
+        <div class="icon-divider">
+            <img src="images/icon1.png" alt="Icon 1" class="rotate-right">
+            <img src="images/icon2.png" alt="Icon 2" class="rotate-left">
+        </div>
 
         <section class="chat-section">
             <div class="chat-bubbles">
