@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rinnana Character Gallery | #MSG_commu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-theme: #C45276;
+            --pink-light: #e94e8a;
+            --blue-theme: #1eb6c1;
+            --max-page-width: 1728px; 
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            background: #fff;
+            color: #222;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--pink-theme);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            max-width: var(--max-page-width);
+            margin: 0 auto;
+            height: 56px;
+        }
+        .navbar-menu {
+            list-style: none;
+            display: flex; gap: 32px; padding: 0 32px;
+        }
+        .navbar-menu li a {
+            color: #fff; text-decoration: none; font-weight: 400; font-size: 16px;
+            transition: 0.2s; border-bottom: 2px solid transparent;
+        }
+        .navbar-menu li a.active, .navbar-menu li a:hover { border-bottom: 2px solid #fff; }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            background: #fff; text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; 
+            min-height: 95vh; overflow: hidden;
+        }
+        .hero-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; object-position: center top; z-index: 0;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,1) 98%);
+            z-index: 1; pointer-events: none;
+        }
+        .hero-desc {
+            position: relative; z-index: 3; color: var(--pink-theme); font-size: 18px;
+            max-width: 900px; line-height: 1.8; padding: 0 24px; margin-bottom: 50px; 
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Character Sections */
+        .character-container {
+            max-width: var(--max-page-width);
+            margin: 0 auto;
+            padding: 0 40px 80px 40px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 40px;
+            align-items: start;
+        }
+
+        .char-title { color: var(--pink-light); font-size: 32px; font-weight: 700; margin: 0; }
+        .char-sub { font-size: 22px; color: #555; margin: 5px 0 30px 0; }
+
+        .idcard-wrapper { display: flex; justify-content: center; }
+        .idcard { width: 100%; max-width: 550px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        .sheet-wrapper { display: flex; flex-direction: column; gap: 20px; }
+        .sheet { width: 100%; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        /* --- ส่วน WAND ที่ย้ายมาอยู่ตรงกลางหน้าจอ --- */
+        .wand-full-width {
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+        .wand { 
+            width: 100%; 
+            max-width: 800px; /* ขยายขนาดไม้ให้ใหญ่สะใจตรงกลางหน้าจอ */
+            border-radius: 15px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+            margin-top: 15px;
+        }
+        
+        .section-label { font-weight: 700; font-size: 20px; margin-bottom: 5px; }
+        .pink-text { color: var(--pink-light); }
+        .blue-text { color: var(--blue-theme); }
+
+        /* Chat Section */
+        .chat-section {
+            max-width: 1000px; margin: 100px auto; padding: 40px;
+            background: #fdfdfd; border-radius: 30px;
+        }
+        .chat-bubbles { display: flex; flex-direction: column; gap: 40px; }
+        .bubble { display: flex; align-items: center; gap: 20px; width: 100%; }
+        .bubble-pink { flex-direction: row; }
+        .bubble-blue { flex-direction: row-reverse; }
+        .bubble-content { padding: 25px 35px; font-size: 18px; border-radius: 25px; }
+        .bg-pink { background: #f9b6d2; color: #e94e8a; border-radius: 25px 25px 25px 0; }
+        .bg-blue { background: #b6e9f9; color: #1eb6c1; border-radius: 25px 25px 0 25px; }
+        .bubble-avatar { width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; }
+
+        @media (max-width: 1024px) {
+            .profile-grid { grid-template-columns: 1fr; }
+            .hero-img { width: 150%; left: -25%; } 
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <ul class="navbar-menu">
+                <li><a href="#" class="active">Character</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Story</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <img src="images/hero.jpg" alt="Hero Image" class="hero-img">
+        <div class="hero-desc">
+            เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมเรื่องราวของเด็กสาวทั้งสองในเซ็ตติ้ง Mohoushiki Gakuen หรือ #MSG_commu<br>
+            ตัวละครและเนื้อหาทั้งหมดเป็นเพียงเรื่องสมมติที่สร้างขึ้นเพื่อความบันเทิง โดยไม่มีวัตถุประสงค์ในการแสวงหากำไรใด ๆ ทั้งสิ้น
+        </div>
+    </header>
+
+    <main>
+        <section class="character-container">
+            <div class="char-title pink-text">Character</div>
+            <div class="char-sub">東雲凛 - Shinonome Rin (ชิโนโนเมะ ริน)</div>
+
+            <div class="profile-grid">
+                <div class="idcard-wrapper">
+                    <img src="images/idcard1.jpg" alt="ID Card Rin" class="idcard">
+                </div>
+                <div class="sheet-wrapper">
+                    <div class="section-label pink-text">Character Sheet</div>
+                    <img src="images/sheet1.jpg" class="sheet">
+                </div>
+            </div>
+
+            <div class="wand-full-width">
+                <div class="section-label pink-text">WAND ออกแบบโดย Reverie Silver</div>
+                <img src="images/wand1.jpg" alt="Wand Rin" class="wand">
+            </div>
+        </section>
+
+        <hr style="border: 0; border-top: 1px solid #eee; max-width: 1728px; margin: 0 auto;">
+
+        <section class="character-container" style="padding-top: 80px;">
+            <div class="char-title blue-text">Character</div>
+            <div class="char-sub">姓名 - Hirabayashi Naoe (ฮิราบายาชิ นาโอเอะ)</div>
+
+            <div class="profile-grid">
+                <div class="idcard-wrapper">
+                    <img src="images/idcard2.jpg" alt="ID Card 2" class="idcard">
+                </div>
+                <div class="sheet-wrapper">
+                    <div class="section-label blue-text">Character Sheet</div>
+                    <img src="images/sheet2.jpg" class="sheet">
+                </div>
+            </div>
+
+            <div class="wand-full-width">
+                <div class="section-label blue-text">CANE ออกแบบโดย Reverie Silver</div>
+                <img src="images/wand2.jpg" alt="Cane 2" class="wand">
+            </div>
+        </section>
+
+        <section class="chat-section">
+            <div class="chat-bubbles">
+                <div class="bubble bubble-pink">
+                    <img src="images/char1.png" class="bubble-avatar">
+                    <div class="bubble-content bg-pink">ยัตต้า!</div>
+                </div>
+                <div class="bubble bubble-blue">
+                    <img src="images/char2.png" class="bubble-avatar">
+                    <div class="bubble-content bg-blue">คิก- เก่งมากเลยค่ะ</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
