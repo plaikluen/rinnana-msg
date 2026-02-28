@@ -86,11 +86,11 @@
         .char-title { color: var(--pink-light); font-size: 32px; font-weight: 700; margin: 0; }
         .char-sub { font-size: 22px; color: #555; margin: 5px 0 30px 0; }
 
-        /* --- ✨ 3D CARD FLIP (ID Card) - แก้ไขรองรับ Mobile ✨ --- */
+        /* --- ✨ 3D CARD FLIP (ID Card) ✨ --- */
         .idcard-wrapper { 
             width: 100%;
             max-width: 550px;
-            aspect-ratio: 550 / 350; /* รักษาสัดส่วนบัตรแทนการใช้ Height ตายตัว */
+            aspect-ratio: 550 / 350; 
             perspective: 1000px;
             cursor: pointer;
             margin: 0 auto;
@@ -104,7 +104,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             border-radius: 15px;
         }
-        .idcard-wrapper:hover .idcard-inner { transform: rotateY(180deg); }
+        
+        /* รองรับทั้ง Hover และ Click บนมือถือ */
+        .idcard-wrapper:hover .idcard-inner,
+        .idcard-wrapper.is-flipped .idcard-inner { 
+            transform: rotateY(180deg); 
+        }
+
         .idcard-front, .idcard-back {
             position: absolute;
             width: 100%;
@@ -124,23 +130,32 @@
             cursor: pointer;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .hover-lift-container:hover {
+
+        /* รองรับทั้ง Hover และ Click บนมือถือ */
+        .hover-lift-container:hover,
+        .hover-lift-container.is-lifted {
             transform: scale(1.03) translateY(-10px); 
         }
+
         .img-base, .img-hover {
             width: 100%;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: opacity 0.4s ease;
         }
+
         .img-hover {
             position: absolute;
             top: 0;
             left: 0;
             opacity: 0; 
         }
-        .hover-lift-container:hover .img-base { opacity: 0; }
-        .hover-lift-container:hover .img-hover { 
+
+        .hover-lift-container:hover .img-base,
+        .hover-lift-container.is-lifted .img-base { opacity: 0; }
+        
+        .hover-lift-container:hover .img-hover,
+        .hover-lift-container.is-lifted .img-hover { 
             opacity: 1; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
         }
@@ -210,7 +225,6 @@
         @media (max-width: 1024px) {
             .profile-grid { grid-template-columns: 1fr; }
             .hero-img { width: 150%; left: -25%; } 
-            /* ลบ Height ตายตัวใน Media Query ออกเพื่อให้ใช้ aspect-ratio แทน */
         }
     </style>
 </head>
@@ -315,6 +329,25 @@
             </div>
         </section>
     </main>
+
+    <script>
+        const flipCards = document.querySelectorAll('.idcard-wrapper');
+        const liftCards = document.querySelectorAll('.hover-lift-container');
+
+        function setupToggle(elements, activeClass) {
+            elements.forEach(el => {
+                el.addEventListener('click', function() {
+                    // ทำงานเฉพาะบนอุปกรณ์ที่เป็น Touchscreen เท่านั้น
+                    if (window.matchMedia("(pointer: coarse)").matches) {
+                        this.classList.toggle(activeClass);
+                    }
+                });
+            });
+        }
+
+        setupToggle(flipCards, 'is-flipped');
+        setupToggle(liftCards, 'is-lifted');
+    </script>
 
 </body>
 </html>
