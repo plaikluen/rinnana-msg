@@ -3,24 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rinnana | #MSG_commu</title>
+    <title>Story | #MSG_commu</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="overlay">
-        <div class="overlay-content">
-            <div class="overlay-title">
-                <img src="images/icon1.png" class="overlay-icon rotate-right">
-                 When Winter Found Spring
-                <img src="images/icon2.png" class="overlay-icon rotate-left">
-            </div>
-            <div class="overlay-subtitle">Mahoushiki Gakuen | #MSG_commu</div>
-            <button class="enter-btn" onclick="startSite()">ENTER</button>
-        </div>
-    </div>
 
     <audio id="main-audio" loop><source id="audio-source" src="music/sukisugi_vocal.mp3" type="audio/mp3"></audio>
 
@@ -32,70 +20,21 @@
     <nav class="navbar">
         <div class="navbar-container">
             <ul class="navbar-menu">
-                <li><a href="index.html" class="nav-link active">Character</a></li>
+                <li><a href="index.html" class="nav-link">Character</a></li>
                 <li><a href="gallery.html" class="nav-link">Gallery</a></li>
                 <li><a href="ost.html" class="nav-link">OST/Voice</a></li>
-                <li><a href="story.html" class="nav-link">Story</a></li>
+                <li><a href="story.html" class="nav-link active">Story</a></li>
             </ul>
         </div>
     </nav>
 
     <div id="app-content">
-        <header class="hero">
-            <img src="images/hero.jpg" alt="Hero Image" class="hero-img">
-            <div class="hero-desc">เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมเรื่องราวของเด็กสาวทั้งสองในเซ็ตติ้ง Mohoushiki Gakuen หรือ #MSG_commu<br>ตัวละครและเนื้อหาทั้งหมดเป็นเพียงเรื่องสมมติที่สร้างขึ้นเพื่อความบันเทิง</div>
-        </header>
-
-        <main>
-            <section class="character-container">
-                <div class="char-title" style="color:var(--pink-light)">Character</div>
-                <div class="char-sub">東雲 凛 - Shinonome Rin (ชิโนโนเมะ ริน)</div>
-                <div class="profile-grid">
-                    <div class="idcard-wrapper">
-                        <div class="idcard-inner"><img src="images/idcard1.jpg" class="idcard-front"><img src="images/idcard1_back.jpg" class="idcard-back"></div>
-                    </div>
-                    <div class="sheet-wrapper">
-                        <div class="section-label" style="color:var(--pink-light)">Character Sheet</div>
-                        <div class="hover-lift-container"><img src="images/sheet1.jpg" class="img-base"><img src="images/sheet1_back.jpg" class="img-hover"></div>
-                    </div>
-                </div>
-                <div class="wand-full-width">
-                    <div class="section-label" style="color:var(--pink-light)">WAND</div>
-                    <div class="hover-lift-container"><img src="images/wand1.jpg" class="img-base"><img src="images/wand1_back.png" class="img-hover"></div>
-                    <div class="credit-text" style="color:var(--pink-light)">ออกแบบโดย Reverie Silver</div>
-                </div>
-            </section>
-
-            <hr style="border: 0; border-top: 1px solid #eee; max-width: 1400px; margin: 0 auto;">
-
-            <section class="character-container" style="padding-top: 80px;">
-                <div class="char-title" style="color:var(--blue-theme)">Character</div>
-                <div class="char-sub">姓 名 - Hirabayashi Naoe (ฮิราบายาชิ นาโอเอะ)</div>
-                <div class="profile-grid">
-                    <div class="idcard-wrapper">
-                        <div class="idcard-inner"><img src="images/idcard2.jpg" class="idcard-front"><img src="images/idcard2_back.jpg" class="idcard-back"></div>
-                    </div>
-                    <div class="sheet-wrapper">
-                        <div class="section-label" style="color:var(--blue-theme)">Character Sheet</div>
-                        <div class="hover-lift-container"><img src="images/sheet2.jpg" class="img-base"><img src="images/sheet2_back.jpg" class="img-hover"></div>
-                    </div>
-                </div>
-                <div class="wand-full-width">
-                    <div class="section-label" style="color:var(--blue-theme)">CANE</div>
-                    <div class="hover-lift-container"><img src="images/wand2.jpg" class="img-base"><img src="images/wand2_back.jpg" class="img-hover"></div>
-                    <div class="credit-text" style="color:var(--blue-theme)">ออกแบบโดย Reverie Silver</div>
-                </div>
-            </section>
-
-            <div class="icon-divider"><img src="images/icon1.png" class="rotate-right"><img src="images/icon2.png" class="rotate-left"></div>
-
-            <section class="chat-section">
-                <div class="chat-bubbles">
-                    <div class="bubble bubble-pink"><img src="images/char1.png" class="bubble-avatar"><div class="bg-pink">ยัตต้า!</div></div>
-                    <div class="bubble bubble-blue"><img src="images/char2.png" class="bubble-avatar"><div class="bg-blue">คิก- เก่งมากเลยค่ะ</div></div>
-                </div>
-            </section>
-            <div class="music-credit">BGM: <b>Sukisugi - Natsuki Karin</b> (Lyrics by Tianpasa)</div>
+        <main class="content-wrapper">
+            <h1>Story</h1>
+            <div class="story-text">
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+                <p style="text-align: center; color: #999;">(รอคอมมูเปิด)</p>
+            </div>
         </main>
     </div>
 
@@ -106,21 +45,9 @@
         const playImg = document.getElementById('play-img');
         const musicContainer = document.getElementById('music-container');
         const label = document.getElementById('track-label');
-        const overlay = document.getElementById('overlay');
         let isVocal = true;
 
         if(audio) audio.volume = 0.3;
-
-        function startSite() {
-            if(audio) audio.play().catch(e => console.log("Audio Error"));
-            updatePlayBtn();
-            if(overlay) {
-                overlay.style.opacity = '0';
-                overlay.style.visibility = 'hidden';
-                document.body.style.overflow = 'auto'; 
-                setTimeout(() => overlay.remove(), 800);
-            }
-        }
 
         function updatePlayBtn() { if(playImg) playImg.src = audio.paused ? "images/play.png" : "images/pause.png"; }
 
@@ -158,7 +85,7 @@
             try {
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
-                const rows = data.split('\n').slice(1); 
+                const rows = data.split('\n').slice(1);
                 grid.innerHTML = ''; 
                 rows.forEach(row => {
                     if (row.trim() === '') return; 
@@ -169,17 +96,12 @@
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
-                            item.innerHTML = `
-                                <img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
-                                <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
-                            `;
+                            item.innerHTML = `<img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'"><div class="artist-tag">By <span class="artist-name">${artist}</span></div>`;
                             grid.appendChild(item);
                         }
                     }
                 });
-            } catch (error) { 
-                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
-            }
+            } catch (error) { grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; }
         }
 
         document.addEventListener('click', e => {
