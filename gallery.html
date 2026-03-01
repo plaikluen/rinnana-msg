@@ -88,7 +88,7 @@
 </head>
 <body>
 
-    <audio id="main-audio" loop><source id="audio-source" src="music/sukisugi_vocal.wav" type="audio/wav"></audio>
+    <audio id="main-audio" loop><source id="audio-source" src="music/sukisugi_vocal.mp3" type="audio/mp3"></audio>
 
     <div class="music-controls" id="music-container">
         <span id="track-label" class="track-info">Vocal Ver.</span>
@@ -136,7 +136,7 @@
                 const currentTime = audio.currentTime;
                 isVocal = !isVocal;
                 // ✨ แก้ไขชื่อไฟล์เวลาสลับ Track ✨
-                source.src = isVocal ? "music/sukisugi_vocal.wav" : "music/sukisugi_off.wav";
+                source.src = isVocal ? "music/sukisugi_vocal.mp3" : "music/sukisugi_off.mp3";
                 label.innerText = isVocal ? "Vocal Ver." : "Off Vocal";
                 musicContainer.style.backgroundColor = isVocal ? "#FFF7E6" : "#6FCCD9";
                 audio.load(); audio.currentTime = currentTime; audio.play();
