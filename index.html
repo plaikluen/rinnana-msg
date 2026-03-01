@@ -5,98 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rinnana | #MSG_commu</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --pink-theme: #C45276; --pink-light: #e94e8a; --blue-theme: #1eb6c1; 
-            --bg-main: #ffffff; --mc-vocal: #FFF7E6; --mc-offvocal: #6FCCD9;
-        }
-        body { font-family: 'Kanit', sans-serif; margin: 0; background: var(--bg-main); color: #222; overflow-x: hidden; overflow: hidden; }
-
-        /* --- UI Styles --- */
-        .music-controls { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--mc-vocal); padding: 10px 25px; border-radius: 50px; border: none; display: flex; gap: 15px; align-items: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer; transition: background-color 0.4s ease, transform 0.2s ease; }
-        .music-controls:active { transform: scale(0.95); }
-        .icon-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; z-index: 1001; }
-        .icon-btn img { width: 15px; height: auto; display: block; }
-        .track-info { font-size: 13px; color: #333; font-weight: bold; pointer-events: none; user-select: none; }
-
-        /* --- Overlay --- */
-        #overlay { position: fixed; inset: 0; background: var(--bg-main); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--pink-theme); transition: opacity 0.8s ease, visibility 0.8s; }
-        .overlay-content { text-align: center; animation: fadeIn 1.5s ease; }
-        .overlay-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; }
-        .overlay-icon { width: 60px; height: auto; }
-        .overlay-subtitle { font-size: 1.2rem; margin-bottom: 40px; color: #555; }
-        .enter-btn { padding: 15px 50px; font-size: 20px; cursor: pointer; border-radius: 50px; border: 2px solid var(--pink-theme); background: transparent; color: var(--pink-theme); font-weight: bold; transition: 0.3s; }
-        .enter-btn:hover { background: var(--pink-theme); color: white; transform: scale(1.05); }
-
-        /* --- SPA --- */
-        #app-content { transition: opacity 0.4s ease, transform 0.4s ease; }
-        .page-loading { opacity: 0; transform: translateY(10px); pointer-events: none; }
-
-        /* --- Navbar --- */
-        .navbar { background: var(--pink-theme); position: sticky; top: 0; z-index: 100; width: 100%; }
-        .navbar-container { display: flex; justify-content: flex-end; align-items: center; height: 56px; }
-        .navbar-menu { list-style: none; display: flex; gap: 32px; padding: 0 32px; margin: 0; }
-        .navbar-menu li a { color: #fff; text-decoration: none; font-weight: 400; font-size: 16px; transition: 0.2s; border-bottom: 2px solid transparent; }
-        .navbar-menu li a.active, .navbar-menu li a:hover { border-bottom: 2px solid #fff; }
-
-        /* --- Index Styles --- */
-        .hero { position: relative; background: var(--bg-main); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-height: 95vh; width: 100vw; overflow: hidden; }
-        .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; z-index: 0; }
-        .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 60%, var(--bg-main) 98%); z-index: 1; pointer-events: none; }
-        .hero-desc { position: relative; z-index: 3; color: var(--pink-theme); font-size: 18px; max-width: 900px; line-height: 1.8; padding: 0 24px; margin-bottom: 50px; text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); }
-        .character-container { max-width: 1400px; margin: 0 auto; padding: 40px 40px 80px 40px; }
-        .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 40px; align-items: start; }
-        .char-title { font-size: 32px; font-weight: 700; margin: 0; }
-        .char-sub { font-size: 22px; color: #555; margin: 5px 0 30px 0; }
-        .idcard-wrapper { width: 100%; max-width: 550px; aspect-ratio: 550 / 350; perspective: 1000px; cursor: pointer; margin: 0 auto; }
-        .idcard-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; border-radius: 15px; }
-        .idcard-front, .idcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .idcard-back { transform: rotateY(180deg); }
-        .sheet-wrapper { display: flex; flex-direction: column; align-items: center; }
-        .hover-lift-container { position: relative; width: 100%; max-width: 800px; margin: 0 auto; cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .img-base, .img-hover { width: 100%; border-radius: 12px; transition: opacity 0.4s ease; }
-        .img-hover { position: absolute; top: 0; left: 0; opacity: 0; }
-        @media (hover: hover) { .idcard-wrapper:hover .idcard-inner { transform: rotateY(180deg); } .hover-lift-container:hover { transform: scale(1.03) translateY(-10px); } .hover-lift-container:hover .img-base { opacity: 0; } .hover-lift-container:hover .img-hover { opacity: 1; } }
-        .idcard-wrapper.is-flipped .idcard-inner { transform: rotateY(180deg); }
-        .hover-lift-container.is-lifted { transform: scale(1.03) translateY(-10px); }
-        .hover-lift-container.is-lifted .img-base { opacity: 0; }
-        .hover-lift-container.is-lifted .img-hover { opacity: 1; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-        .wand-full-width { margin-top: 60px; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
-        .section-label { font-weight: 700; font-size: 20px; margin-bottom: 10px; }
-        .credit-text { font-weight: 400; font-size: 16px; margin-top: 15px; }
-        .icon-divider { display: flex; justify-content: center; align-items: center; gap: 30px; margin: 60px 0; }
-        .icon-divider img { width: 80px; height: auto; transition: 0.3s; }
-        .rotate-right { animation: spin-right 8s linear infinite; }
-        .rotate-left { animation: spin-left 8s linear infinite; }
-        @keyframes spin-right { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes spin-left { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-        .chat-section { max-width: 1000px; margin: 40px auto 40px auto; padding: 40px; background: #fdfdfd; border-radius: 30px; }
-        .bubble { display: flex; align-items: center; gap: 20px; width: 100%; margin-bottom: 40px; }
-        .bubble-pink { flex-direction: row; }
-        .bubble-blue { flex-direction: row-reverse !important; }
-        .bg-pink { background: #f9b6d2; color: #e94e8a; padding: 25px 35px; border-radius: 25px 25px 25px 0; }
-        .bg-blue { background: #b6e9f9; color: #00768E; padding: 25px 35px; border-radius: 25px 25px 0 25px; }
-        .bubble-avatar { width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; }
-        .music-credit { text-align: center; padding-bottom: 80px; color: #888; font-size: 14px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- ✨ Gallery Layout (Pinterest Style) เพิ่มเข้ามาแล้ว ✨ --- */
-        .gallery-content { max-width: 1400px; margin: 0 auto; padding: 40px; text-align: center; }
-        .gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 40px 0; }
-        .gallery-grid { column-count: 4; column-gap: 20px; width: 100%; }
-        .gallery-item { display: inline-block; width: 100%; margin-bottom: 20px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: zoom-in; break-inside: avoid; }
-        .gallery-item:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
-        .gallery-item img { width: 100%; display: block; height: auto; }
-        .artist-tag { padding: 15px; text-align: left; font-size: 14px; color: #777; background: #fff; }
-        .artist-name { font-weight: 700; color: var(--pink-theme); }
-
-        /* Responsive */
-        @media (max-width: 1200px) { .gallery-grid { column-count: 3; } }
-        @media (max-width: 1024px) { .profile-grid { grid-template-columns: 1fr; } .hero-img { width: 150%; left: -25%; } }
-        @media (max-width: 768px) { .gallery-grid { column-count: 2; } }
-        @media (max-width: 480px) { .gallery-grid { column-count: 1; } }
-
-    </style>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -199,9 +109,8 @@
         const overlay = document.getElementById('overlay');
         let isVocal = true;
 
-        if(audio) audio.volume = 0.3; // ระดับเสียง
+        if(audio) audio.volume = 0.3;
 
-        // 1. Overlay
         function startSite() {
             if(audio) audio.play().catch(e => console.log("Audio Error"));
             updatePlayBtn();
@@ -213,7 +122,6 @@
             }
         }
 
-        // 2. Music Controls
         function updatePlayBtn() { if(playImg) playImg.src = audio.paused ? "images/play.png" : "images/pause.png"; }
 
         if(musicContainer) {
@@ -233,7 +141,6 @@
             playBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audio.paused) audio.play(); else audio.pause(); updatePlayBtn(); });
         }
 
-        // 3. ฟังก์ชันเสริมของแต่ละหน้า
         function setupAnimations() {
             const flipCards = document.querySelectorAll('.idcard-wrapper');
             const liftCards = document.querySelectorAll('.hover-lift-container');
@@ -251,18 +158,14 @@
             try {
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
-                
                 const rows = data.split('\n').slice(1); 
                 grid.innerHTML = ''; 
-                
                 rows.forEach(row => {
                     if (row.trim() === '') return; 
                     const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    
                     if (columns.length >= 2) {
                         const artist = columns[0].replace(/^"|"$/g, '').trim();
                         const url = columns[1].replace(/^"|"$/g, '').trim();
-                        
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
@@ -276,11 +179,9 @@
                 });
             } catch (error) { 
                 grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
-                console.error("Gallery Load Error:", error);
             }
         }
 
-        // 4. ระบบ SPA
         document.addEventListener('click', e => {
             const link = e.target.closest('.nav-link');
             if (link) {
@@ -293,38 +194,30 @@
         async function loadPage(url) {
             const content = document.querySelector('#app-content');
             if(!content) return;
-            
             content.classList.add('page-loading');
             await new Promise(r => setTimeout(r, 400));
-            
             try {
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("Fetch failed");
                 const html = await res.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
-                
                 const newContent = doc.querySelector('#app-content');
                 if (newContent) {
                     content.innerHTML = newContent.innerHTML;
                     window.history.pushState({}, '', url);
-                    
                     document.querySelectorAll('.nav-link').forEach(l => {
                         l.classList.remove('active');
                         if (url.includes(l.getAttribute('href'))) l.classList.add('active');
                     });
-                    
                     document.body.style.overflow = 'auto';
-                    
                     if (url.includes('gallery.html')) loadGallery();
                     if (url.includes('index.html')) setupAnimations();
-                    
                     content.classList.remove('page-loading');
                     window.scrollTo(0, 0);
                 } else {
                     window.location.href = url;
                 }
             } catch (err) { 
-                console.error("SPA Error: Switching to normal load.", err); 
                 window.location.href = url; 
             }
         }
