@@ -51,7 +51,7 @@
         const label = document.getElementById('track-label');
         let isVocal = true;
 
-        // ✨ ปรับลดระดับเสียงเพลงลงเหลือ 10% ตามที่ขอครับ ✨
+        // ระดับเสียง 10% ตามที่ต้องการ
         if(audio) audio.volume = 0.1;
 
         function updatePlayBtn() { if(playImg) playImg.src = audio.paused ? "images/play.png" : "images/pause.png"; }
@@ -90,7 +90,7 @@
             if(lightbox && lightboxImg) {
                 lightboxImg.src = src;
                 lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; // ปิดการ scroll ของหน้าเว็บเวลาดูรูป
+                document.body.style.overflow = 'hidden'; 
             }
         }
 
@@ -98,7 +98,9 @@
             const lightbox = document.getElementById('lightbox');
             if(lightbox) {
                 lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto'; // เปิดการ scroll กลับมา
+                document.body.style.overflow = 'auto'; 
+                // ล้าง src เมื่อปิด เพื่อให้แอนิเมชั่นเริ่มใหม่ทุกครั้งที่กดรูปใหม่
+                setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
             }
         }
 
@@ -121,7 +123,6 @@
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
-                            // ✨ เพิ่ม onclick="openImage('${url}')" เพื่อให้กดดูรูปใหญ่ได้ ✨
                             item.innerHTML = `
                                 <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
                                 <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
@@ -132,7 +133,6 @@
                 });
             } catch (error) { 
                 grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
-                console.error("Gallery Load Error:", error);
             }
         }
 
@@ -150,8 +150,7 @@
             const content = document.querySelector('#app-content');
             if(!content) return;
             
-            // ปิด Popup เผื่อมีการกดลิงก์ตอนที่ดูรูปอยู่
-            closeImage();
+            closeImage(); // ปิด Popup ก่อนเปลี่ยนหน้า
 
             content.classList.add('page-loading');
             await new Promise(r => setTimeout(r, 400));
@@ -179,12 +178,10 @@
                     window.location.href = url;
                 }
             } catch (err) { 
-                console.error("SPA Error: Switching to normal load.", err); 
                 window.location.href = url; 
             }
         }
 
-        // เริ่มต้นการทำงานเมื่อเข้าหน้านี้
         loadGallery();
         setupAnimations();
         window.onpopstate = () => loadPage(window.location.href);

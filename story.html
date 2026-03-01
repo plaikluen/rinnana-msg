@@ -38,6 +38,11 @@
         </main>
     </div>
 
+    <div id="lightbox" class="lightbox" onclick="closeImage()">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="Full view">
+    </div>
+
     <script>
         const audio = document.getElementById('main-audio');
         const source = document.getElementById('audio-source');
@@ -78,6 +83,26 @@
             }
         }
 
+        // --- ✨ ฟังก์ชันควบคุม Popup รูปภาพ (ต้องมีไว้ทุกหน้า) ✨ ---
+        function openImage(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            if(lightbox && lightboxImg) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            }
+        }
+
+        function closeImage() {
+            const lightbox = document.getElementById('lightbox');
+            if(lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+                setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
+            }
+        }
+
         const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv"; 
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
@@ -96,7 +121,10 @@
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
-                            item.innerHTML = `<img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'"><div class="artist-tag">By <span class="artist-name">${artist}</span></div>`;
+                            item.innerHTML = `
+                                <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
+                                <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
+                            `;
                             grid.appendChild(item);
                         }
                     }
@@ -116,6 +144,9 @@
         async function loadPage(url) {
             const content = document.querySelector('#app-content');
             if(!content) return;
+
+            closeImage(); // เคลียร์ Popup ก่อนเปลี่ยนหน้า
+
             content.classList.add('page-loading');
             await new Promise(r => setTimeout(r, 400));
             try {
