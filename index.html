@@ -12,14 +12,14 @@
         }
         body { font-family: 'Kanit', sans-serif; margin: 0; background: var(--bg-main); color: #222; overflow-x: hidden; overflow: hidden; }
 
-        /* UI Styles */
+        /* --- UI Styles --- */
         .music-controls { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--mc-vocal); padding: 10px 25px; border-radius: 50px; border: none; display: flex; gap: 15px; align-items: center; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); cursor: pointer; transition: background-color 0.4s ease, transform 0.2s ease; }
         .music-controls:active { transform: scale(0.95); }
         .icon-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; z-index: 1001; }
         .icon-btn img { width: 15px; height: auto; display: block; }
         .track-info { font-size: 13px; color: #333; font-weight: bold; pointer-events: none; user-select: none; }
 
-        /* Overlay */
+        /* --- Overlay --- */
         #overlay { position: fixed; inset: 0; background: var(--bg-main); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--pink-theme); transition: opacity 0.8s ease, visibility 0.8s; }
         .overlay-content { text-align: center; animation: fadeIn 1.5s ease; }
         .overlay-title { font-size: 3.5rem; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 20px; }
@@ -28,18 +28,18 @@
         .enter-btn { padding: 15px 50px; font-size: 20px; cursor: pointer; border-radius: 50px; border: 2px solid var(--pink-theme); background: transparent; color: var(--pink-theme); font-weight: bold; transition: 0.3s; }
         .enter-btn:hover { background: var(--pink-theme); color: white; transform: scale(1.05); }
 
-        /* SPA */
+        /* --- SPA --- */
         #app-content { transition: opacity 0.4s ease, transform 0.4s ease; }
         .page-loading { opacity: 0; transform: translateY(10px); pointer-events: none; }
 
-        /* Navbar */
+        /* --- Navbar --- */
         .navbar { background: var(--pink-theme); position: sticky; top: 0; z-index: 100; width: 100%; }
         .navbar-container { display: flex; justify-content: flex-end; align-items: center; height: 56px; }
         .navbar-menu { list-style: none; display: flex; gap: 32px; padding: 0 32px; margin: 0; }
         .navbar-menu li a { color: #fff; text-decoration: none; font-weight: 400; font-size: 16px; transition: 0.2s; border-bottom: 2px solid transparent; }
         .navbar-menu li a.active, .navbar-menu li a:hover { border-bottom: 2px solid #fff; }
 
-        /* Index Styles */
+        /* --- Index Styles --- */
         .hero { position: relative; background: var(--bg-main); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-height: 95vh; width: 100vw; overflow: hidden; }
         .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; z-index: 0; }
         .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 60%, var(--bg-main) 98%); z-index: 1; pointer-events: none; }
@@ -52,6 +52,7 @@
         .idcard-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; border-radius: 15px; }
         .idcard-front, .idcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .idcard-back { transform: rotateY(180deg); }
+        .sheet-wrapper { display: flex; flex-direction: column; align-items: center; }
         .hover-lift-container { position: relative; width: 100%; max-width: 800px; margin: 0 auto; cursor: pointer; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .img-base, .img-hover { width: 100%; border-radius: 12px; transition: opacity 0.4s ease; }
         .img-hover { position: absolute; top: 0; left: 0; opacity: 0; }
@@ -78,8 +79,23 @@
         .bubble-avatar { width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; }
         .music-credit { text-align: center; padding-bottom: 80px; color: #888; font-size: 14px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        
+
+        /* --- ✨ Gallery Layout (Pinterest Style) เพิ่มเข้ามาแล้ว ✨ --- */
+        .gallery-content { max-width: 1400px; margin: 0 auto; padding: 40px; text-align: center; }
+        .gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 40px 0; }
+        .gallery-grid { column-count: 4; column-gap: 20px; width: 100%; }
+        .gallery-item { display: inline-block; width: 100%; margin-bottom: 20px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: zoom-in; break-inside: avoid; }
+        .gallery-item:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+        .gallery-item img { width: 100%; display: block; height: auto; }
+        .artist-tag { padding: 15px; text-align: left; font-size: 14px; color: #777; background: #fff; }
+        .artist-name { font-weight: 700; color: var(--pink-theme); }
+
+        /* Responsive */
+        @media (max-width: 1200px) { .gallery-grid { column-count: 3; } }
         @media (max-width: 1024px) { .profile-grid { grid-template-columns: 1fr; } .hero-img { width: 150%; left: -25%; } }
+        @media (max-width: 768px) { .gallery-grid { column-count: 2; } }
+        @media (max-width: 480px) { .gallery-grid { column-count: 1; } }
+
     </style>
 </head>
 <body>
@@ -182,7 +198,8 @@
         const label = document.getElementById('track-label');
         const overlay = document.getElementById('overlay');
         let isVocal = true;
-        audio.volume = 0.3;
+
+        if(audio) audio.volume = 0.3; // ระดับเสียง
 
         // 1. Overlay
         function startSite() {
@@ -191,7 +208,7 @@
             if(overlay) {
                 overlay.style.opacity = '0';
                 overlay.style.visibility = 'hidden';
-                document.body.style.overflow = 'auto'; // ปลดล็อคหน้า Index
+                document.body.style.overflow = 'auto'; 
                 setTimeout(() => overlay.remove(), 800);
             }
         }
@@ -204,7 +221,6 @@
                 if (e.target.closest('#play-btn')) return;
                 const currentTime = audio.currentTime;
                 isVocal = !isVocal;
-                // ✨ แก้ไขชื่อไฟล์เพลงเวลาสลับ Track ✨
                 source.src = isVocal ? "music/sukisugi_vocal.mp3" : "music/sukisugi_off.mp3";
                 label.innerText = isVocal ? "Vocal Ver." : "Off Vocal";
                 musicContainer.style.backgroundColor = isVocal ? "#FFF7E6" : "#6FCCD9";
@@ -235,22 +251,33 @@
             try {
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
-                const rows = data.split('\n').slice(1);
+                
+                const rows = data.split('\n').slice(1); 
                 grid.innerHTML = ''; 
+                
                 rows.forEach(row => {
-                    const columns = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+                    if (row.trim() === '') return; 
+                    const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    
                     if (columns.length >= 2) {
-                        const artist = columns[0].replace(/"/g, '').trim();
-                        const url = columns[1].replace(/"/g, '').trim();
+                        const artist = columns[0].replace(/^"|"$/g, '').trim();
+                        const url = columns[1].replace(/^"|"$/g, '').trim();
+                        
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
-                            item.innerHTML = `<img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'"><div class="artist-tag">By <span class="artist-name">${artist}</span></div>`;
+                            item.innerHTML = `
+                                <img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
+                                <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
+                            `;
                             grid.appendChild(item);
                         }
                     }
                 });
-            } catch (error) { grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; }
+            } catch (error) { 
+                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
+                console.error("Gallery Load Error:", error);
+            }
         }
 
         // 4. ระบบ SPA

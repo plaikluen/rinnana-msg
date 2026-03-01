@@ -30,55 +30,6 @@
         .navbar-menu li a { color: #fff; text-decoration: none; font-weight: 400; font-size: 16px; transition: 0.2s; border-bottom: 2px solid transparent; }
         .navbar-menu li a.active, .navbar-menu li a:hover { border-bottom: 2px solid #fff; }
 
-        /* --- ✨ Gallery Layout (Pinterest Style) ✨ --- */
-        .gallery-content { max-width: 1400px; margin: 0 auto; padding: 40px; text-align: center; }
-        .gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 40px 0; }
-        
-        /* สร้าง Masonry Grid */
-        .gallery-grid {
-            column-count: 4; /* จำนวนคอลัมน์เริ่มต้น */
-            column-gap: 20px; /* ระยะห่างระหว่างคอลัมน์ */
-            width: 100%;
-        }
-
-        .gallery-item {
-            display: inline-block; /* ป้องกันไม่ให้ภาพโดนตัดกลาง (Break inside) */
-            width: 100%; 
-            margin-bottom: 20px; /* ระยะห่างระหว่างภาพด้านบน-ล่าง */
-            background: #fff; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-            transition: transform 0.3s ease, box-shadow 0.3s ease; 
-            cursor: zoom-in;
-            break-inside: avoid; /* สำคัญสำหรับ Masonry Grid */
-        }
-
-        .gallery-item:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
-        }
-
-        .gallery-item img { 
-            width: 100%; 
-            display: block; 
-            height: auto; /* รักษาอัตราส่วนภาพ */
-        }
-
-        .artist-tag { 
-            padding: 15px; 
-            text-align: left; 
-            font-size: 14px; 
-            color: #777; 
-            background: #fff; /* พื้นหลังสีขาวให้ Artist Tag */
-        }
-        .artist-name { font-weight: 700; color: var(--pink-theme); }
-
-        /* --- Responsive Gallery --- */
-        @media (max-width: 1200px) { .gallery-grid { column-count: 3; } }
-        @media (max-width: 768px) { .gallery-grid { column-count: 2; } }
-        @media (max-width: 480px) { .gallery-grid { column-count: 1; } }
-
         /* --- Index Styles (เผื่อดึงกลับ) --- */
         .hero { position: relative; background: var(--bg-main); text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-height: 95vh; width: 100vw; overflow: hidden; }
         .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; z-index: 0; }
@@ -118,15 +69,32 @@
         .bg-blue { background: #b6e9f9; color: #00768E; padding: 25px 35px; border-radius: 25px 25px 0 25px; }
         .bubble-avatar { width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; }
         .music-credit { text-align: center; padding-bottom: 80px; color: #888; font-size: 14px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- ✨ Gallery Layout (Pinterest Style) ✨ --- */
+        .gallery-content { max-width: 1400px; margin: 0 auto; padding: 40px; text-align: center; }
+        .gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 40px 0; }
+        .gallery-grid { column-count: 4; column-gap: 20px; width: 100%; }
+        .gallery-item { display: inline-block; width: 100%; margin-bottom: 20px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: zoom-in; break-inside: avoid; }
+        .gallery-item:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+        .gallery-item img { width: 100%; display: block; height: auto; }
+        .artist-tag { padding: 15px; text-align: left; font-size: 14px; color: #777; background: #fff; }
+        .artist-name { font-weight: 700; color: var(--pink-theme); }
+
+        /* --- Responsive --- */
+        @media (max-width: 1200px) { .gallery-grid { column-count: 3; } }
+        @media (max-width: 1024px) { .profile-grid { grid-template-columns: 1fr; } .hero-img { width: 150%; left: -25%; } }
+        @media (max-width: 768px) { .gallery-grid { column-count: 2; } }
+        @media (max-width: 480px) { .gallery-grid { column-count: 1; } }
     </style>
 </head>
 <body>
 
-    <audio id="main-audio" loop><source id="audio-source" src="music/sukisugi_vocal.wav" type="audio/wav"></audio>
+    <audio id="main-audio" loop><source id="audio-source" src="music/sukisugi_vocal.mp3" type="audio/mp3"></audio>
 
     <div class="music-controls" id="music-container">
         <span id="track-label" class="track-info">Vocal Ver.</span>
-        <button id="play-btn" class="icon-btn"><img id="play-img" src="images/pause.png"></button>
+        <button id="play-btn" class="icon-btn"><img id="play-img" src="images/pause.png" alt="Play/Pause"></button>
     </div>
 
     <nav class="navbar">
@@ -167,7 +135,7 @@
                 if (e.target.closest('#play-btn')) return;
                 const currentTime = audio.currentTime;
                 isVocal = !isVocal;
-                source.src = isVocal ? "music/sukisugi_vocal.wav" : "music/sukisugi_off.wav";
+                source.src = isVocal ? "music/sukisugi_vocal.mp3" : "music/sukisugi_off.mp3";
                 label.innerText = isVocal ? "Vocal Ver." : "Off Vocal";
                 musicContainer.style.backgroundColor = isVocal ? "#FFF7E6" : "#6FCCD9";
                 audio.load(); audio.currentTime = currentTime; audio.play();
@@ -198,14 +166,13 @@
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
                 
-                // แก้ไขการดึงข้อมูล ให้แยกแถวและคอลัมน์ได้อย่างแม่นยำ
                 const rows = data.split('\n').slice(1); // ข้าม Header
                 grid.innerHTML = ''; 
                 
                 rows.forEach(row => {
                     if (row.trim() === '') return; // ข้ามแถวว่าง
-
-                    // แยกข้อมูลด้วย comma แต่ไม่แยกคอมมาในเครื่องหมายคำพูด (ถ้ามี)
+                    
+                    // แยกข้อมูลด้วย comma
                     const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     
                     if (columns.length >= 2) {
@@ -281,6 +248,7 @@
 
         // โหลดรูปทันทีเมื่อเข้าหน้านี้
         loadGallery();
+        setupAnimations(); // เรียกเผื่อกดเปลี่ยนหน้าไป Index
         window.onpopstate = () => loadPage(window.location.href);
     </script>
 </body>
