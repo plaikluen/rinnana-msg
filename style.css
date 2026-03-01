@@ -97,6 +97,13 @@ body {
 .artist-tag { padding: 15px; text-align: left; font-size: 14px; color: #777; background: #fff; }
 .artist-name { font-weight: 700; color: var(--pink-theme); }
 
+/* --- ✨ Lightbox Popup Styles (ดูรูปหน้า Gallery) ✨ --- */
+.lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 10000; cursor: zoom-out; opacity: 0; transition: opacity 0.3s ease; }
+.lightbox.active { display: flex; opacity: 1; }
+.lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease; }
+.lightbox.active img { transform: scale(1); }
+.close-lightbox { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; user-select: none; }
+
 /* --- ✨ OST & Story Styles ✨ --- */
 .content-wrapper { max-width: 1000px; margin: 0 auto; padding: 60px 20px; text-align: center; }
 .content-wrapper h1 { color: var(--pink-theme); font-size: 36px; margin-bottom: 40px; }

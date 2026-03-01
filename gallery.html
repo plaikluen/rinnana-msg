@@ -37,6 +37,11 @@
         </main>
     </div>
 
+    <div id="lightbox" class="lightbox" onclick="closeImage()">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="Full view">
+    </div>
+
     <script>
         const audio = document.getElementById('main-audio');
         const source = document.getElementById('audio-source');
@@ -46,7 +51,8 @@
         const label = document.getElementById('track-label');
         let isVocal = true;
 
-        if(audio) audio.volume = 0.05;
+        // ✨ ปรับลดระดับเสียงเพลงลงเหลือ 10% ตามที่ขอครับ ✨
+        if(audio) audio.volume = 0.1;
 
         function updatePlayBtn() { if(playImg) playImg.src = audio.paused ? "images/play.png" : "images/pause.png"; }
 
@@ -77,6 +83,26 @@
             }
         }
 
+        // --- ✨ ฟังก์ชันควบคุม Popup รูปภาพ ✨ ---
+        function openImage(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            if(lightbox && lightboxImg) {
+                lightboxImg.src = src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // ปิดการ scroll ของหน้าเว็บเวลาดูรูป
+            }
+        }
+
+        function closeImage() {
+            const lightbox = document.getElementById('lightbox');
+            if(lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto'; // เปิดการ scroll กลับมา
+            }
+        }
+
+        // --- ฟังก์ชันดึงรูปภาพจาก Google Sheets ---
         const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv"; 
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
@@ -95,8 +121,9 @@
                         if(url && url.startsWith('http')) {
                             const item = document.createElement('div');
                             item.className = 'gallery-item';
+                            // ✨ เพิ่ม onclick="openImage('${url}')" เพื่อให้กดดูรูปใหญ่ได้ ✨
                             item.innerHTML = `
-                                <img src="${url}" alt="Artwork by ${artist}" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
+                                <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
                                 <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
                             `;
                             grid.appendChild(item);
@@ -109,6 +136,7 @@
             }
         }
 
+        // --- ระบบ SPA ---
         document.addEventListener('click', e => {
             const link = e.target.closest('.nav-link');
             if (link) {
@@ -121,6 +149,10 @@
         async function loadPage(url) {
             const content = document.querySelector('#app-content');
             if(!content) return;
+            
+            // ปิด Popup เผื่อมีการกดลิงก์ตอนที่ดูรูปอยู่
+            closeImage();
+
             content.classList.add('page-loading');
             await new Promise(r => setTimeout(r, 400));
             try {
@@ -137,8 +169,10 @@
                         if (url.includes(l.getAttribute('href'))) l.classList.add('active');
                     });
                     document.body.style.overflow = 'auto';
+                    
                     if (url.includes('gallery.html')) loadGallery();
                     if (url.includes('index.html')) setupAnimations();
+                    
                     content.classList.remove('page-loading');
                     window.scrollTo(0, 0);
                 } else {
@@ -150,6 +184,7 @@
             }
         }
 
+        // เริ่มต้นการทำงานเมื่อเข้าหน้านี้
         loadGallery();
         setupAnimations();
         window.onpopstate = () => loadPage(window.location.href);
