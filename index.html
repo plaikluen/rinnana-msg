@@ -33,7 +33,13 @@
         <div class="navbar-container">
             <ul class="navbar-menu">
                 <li><a href="index.html" class="nav-link active">Character</a></li>
-                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li class="nav-dropdown">
+                    <a href="gallery.html" class="nav-link">Gallery</a>
+                    <div class="dropdown-menu">
+                        <button class="sort-btn active" id="sort-new" onclick="sortGallery('new')">ใหม่ → เก่า</button>
+                        <button class="sort-btn" id="sort-old" onclick="sortGallery('old')">เก่า → ใหม่</button>
+                    </div>
+                </li>
                 <li><a href="ost.html" class="nav-link">OST/Voice</a></li>
                 <li><a href="story.html" class="nav-link">Story</a></li>
             </ul>
