@@ -97,7 +97,16 @@ body {
 
 /* --- ✨ Gallery Styles ✨ --- */
 .gallery-content { max-width: 1400px; margin: 0 auto; padding: 40px; text-align: center; }
-.gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 40px 0 20px; }
+.gallery-content h1 { color: var(--pink-theme); font-size: 36px; margin: 0; }
+.gallery-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 40px 0 20px; position: relative; }
+.sort-toggle-btn { background: none; border: 2px solid var(--pink-theme); color: var(--pink-theme); border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; transition: transform 0.3s ease, background 0.2s ease; display: flex; align-items: center; justify-content: center; line-height: 1; position: absolute; right: 0; }
+.sort-toggle-btn:hover { background: var(--pink-theme); color: #fff; }
+.sort-toggle-btn.open { transform: rotate(180deg); }
+.sort-dropdown { display: flex; justify-content: center; gap: 10px; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease; margin-bottom: 0; }
+.sort-dropdown.show { max-height: 60px; opacity: 1; margin-bottom: 20px; }
+.sort-dropdown .sort-btn { padding: 8px 20px; border: 2px solid var(--pink-theme); border-radius: 50px; background: transparent; color: var(--pink-theme); font-family: 'Kanit', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s ease; }
+.sort-dropdown .sort-btn:hover { background: var(--pink-light); color: #fff; border-color: var(--pink-light); }
+.sort-dropdown .sort-btn.active { background: var(--pink-theme); color: #fff; }
 .gallery-grid { column-count: 4; column-gap: 20px; width: 100%; }
 
 .gallery-item { display: inline-block; width: 100%; margin-bottom: 20px; background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: zoom-in; break-inside: avoid; }
