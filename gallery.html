@@ -31,6 +31,10 @@
     <div id="app-content">
         <main class="gallery-content">
             <h1>Gallery</h1>
+            <div class="sort-controls">
+                <button class="sort-btn active" id="sort-new" onclick="sortGallery('new')">ใหม่ → เก่า</button>
+                <button class="sort-btn" id="sort-old" onclick="sortGallery('old')">เก่า → ใหม่</button>
+            </div>
             <div class="gallery-grid" id="galleryGrid">
                 <p style="grid-column: 1 / -1;">กำลังโหลดรูปภาพจากระบบ...</p>
             </div>
@@ -105,7 +109,10 @@
         }
 
         // --- ฟังก์ชันดึงรูปภาพจาก Google Sheets ---
-        const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv"; 
+        const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv";
+        let galleryItems = [];
+        let currentSort = 'new';
+
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
             if (!grid) return;
@@ -113,27 +120,45 @@
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
                 const rows = data.split('\n').slice(1);
-                grid.innerHTML = ''; 
+                galleryItems = [];
                 rows.forEach(row => {
-                    if (row.trim() === '') return; 
+                    if (row.trim() === '') return;
                     const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     if (columns.length >= 2) {
                         const artist = columns[0].replace(/^"|"$/g, '').trim();
                         const url = columns[1].replace(/^"|"$/g, '').trim();
                         if(url && url.startsWith('http')) {
-                            const item = document.createElement('div');
-                            item.className = 'gallery-item';
-                            item.innerHTML = `
-                                <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
-                                <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
-                            `;
-                            grid.appendChild(item);
+                            galleryItems.push({ artist, url });
                         }
                     }
                 });
-            } catch (error) { 
-                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
+                renderGallery();
+            } catch (error) {
+                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>';
             }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+            const items = currentSort === 'new' ? [...galleryItems].reverse() : [...galleryItems];
+            grid.innerHTML = '';
+            items.forEach(({ artist, url }) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
+                    <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function sortGallery(order) {
+            currentSort = order;
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('sort-' + order).classList.add('active');
+            renderGallery();
         }
 
         // --- ระบบ SPA ---

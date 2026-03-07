@@ -43,7 +43,7 @@
     <div id="app-content">
         <header class="hero">
             <img src="images/hero.jpg" alt="Hero Image" class="hero-img">
-            <div class="hero-desc">เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมเรื่องราวของเด็กสาวทั้งสองในเซ็ตติ้ง Mohoushiki Gakuen หรือ #MSG_commu<br>ตัวละครและเนื้อหาทั้งหมดเป็นเพียงเรื่องสมมติที่สร้างขึ้นเพื่อความบันเทิง</div>
+            <div class="hero-desc">เว็บไซต์นี้จัดทำขึ้นเพื่อรวบรวมเรื่องราวของเด็กสาวทั้งสองในเซ็ตติ้ง Mohoushiki Gakuen หรือ #MSG_commu<br>ตัวละครและเนื้อหาทั้งหมดเป็นเพียงเรื่องสมมติที่สร้างขึ้นเพื่อความบันเทิง ไม่มีจเจตนาแสวงหาผลกำไรใด ๆ ทั้งสิ้ย</div>
         </header>
 
         <main>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="sheet-wrapper">
                         <div class="section-label" style="color:var(--pink-light)">Character Sheet</div>
-                        <div class="hover-lift-container"><img src="images/sheet1.jpg" class="img-base"><img src="images/sheet1_back.jpg" class="img-hover"></div>
+                        <img src="images/sheet1.jpg" class="sheet-clickable" style="cursor:zoom-in;" onclick="openImage('images/sheet1.jpg')">
                     </div>
                 </div>
                 <div class="wand-full-width">
@@ -77,7 +77,7 @@
                     </div>
                     <div class="sheet-wrapper">
                         <div class="section-label" style="color:var(--blue-theme)">Character Sheet</div>
-                        <div class="hover-lift-container"><img src="images/sheet2.jpg" class="img-base"><img src="images/sheet2_back.jpg" class="img-hover"></div>
+                        <img src="images/sheet2.jpg" class="sheet-clickable" style="cursor:zoom-in;" onclick="openImage('images/sheet2.jpg')">
                     </div>
                 </div>
                 <div class="wand-full-width">
@@ -175,36 +175,56 @@
             }
         }
 
-        const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv"; 
+        const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq0BFHKVSCUHbzjS-GPCLoggKXpeAecEMsj9yn4lZArfBZk6I6RzxfuM88cos9ifd2UGJdKguUX_w4/pub?output=csv";
+        let galleryItems = [];
+        let currentSort = 'new';
+
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
             if (!grid) return;
             try {
                 const response = await fetch(sheetCsvUrl + "&t=" + new Date().getTime());
                 const data = await response.text();
-                const rows = data.split('\n').slice(1); 
-                grid.innerHTML = ''; 
+                const rows = data.split('\n').slice(1);
+                galleryItems = [];
                 rows.forEach(row => {
-                    if (row.trim() === '') return; 
+                    if (row.trim() === '') return;
                     const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     if (columns.length >= 2) {
                         const artist = columns[0].replace(/^"|"$/g, '').trim();
                         const url = columns[1].replace(/^"|"$/g, '').trim();
                         if(url && url.startsWith('http')) {
-                            const item = document.createElement('div');
-                            item.className = 'gallery-item';
-                            // เพิ่มฟังก์ชันคลิกดูรูปใหญ่
-                            item.innerHTML = `
-                                <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
-                                <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
-                            `;
-                            grid.appendChild(item);
+                            galleryItems.push({ artist, url });
                         }
                     }
                 });
-            } catch (error) { 
-                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>'; 
+                renderGallery();
+            } catch (error) {
+                grid.innerHTML = '<p>ไม่สามารถดึงข้อมูลรูปภาพได้</p>';
             }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+            const items = currentSort === 'new' ? [...galleryItems].reverse() : [...galleryItems];
+            grid.innerHTML = '';
+            items.forEach(({ artist, url }) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${url}" alt="Artwork by ${artist}" style="cursor: zoom-in;" onclick="openImage('${url}')" onerror="this.src='https://placehold.co/400x600?text=Image+Error'">
+                    <div class="artist-tag">By <span class="artist-name">${artist}</span></div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        function sortGallery(order) {
+            currentSort = order;
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('sort-' + order).classList.add('active');
+            renderGallery();
         }
 
         document.addEventListener('click', e => {
